@@ -1,0 +1,14 @@
+input {
+  name: 'inp_file'
+  record_format: 'english-text'
+  Part {
+    file_pattern: '/root/input.txt'
+  }
+}
+input {
+  name: 'out_file'
+  record_format: 'conll-sentence'
+  Part {
+    file_pattern: '/root/output.conll'
+  }
+}
