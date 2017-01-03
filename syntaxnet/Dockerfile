@@ -22,14 +22,13 @@ RUN mkdir -p $SYNTAXNETDIR \
 RUN cd $SYNTAXNETDIR/models/syntaxnet \
     && bazel test --genrule_strategy=standalone syntaxnet/... util/utf8/...
 
-ADD requirements.txt $HOME/requirements.txt
-ADD server.py $HOME/server.py
-ADD context.add.pbtxt $HOME/context.add.pbtxt
-RUN cd $HOME \
-    && pip install -r $HOME/requirements.txt \
-    && cat $SYNTAXNETDIR/models/syntaxnet/syntaxnet/models/parsey_mcparseface/context.pbtxt \
-      $HOME/context.add.pbtxt > \
+ADD requirements.txt /root/requirements.txt
+ADD context.add.pbtxt /root/context.add.pbtxt
+RUN pip install -r /root/requirements.txt \
+    && cat /root/context.add.pbtxt >> \
       $SYNTAXNETDIR/models/syntaxnet/syntaxnet/models/parsey_mcparseface/context.pbtxt
+ADD work.sh /root/work.sh
+ADD server.py /root/server.py
 EXPOSE 5005
 
 WORKDIR $SYNTAXNETDIR/models/syntaxnet

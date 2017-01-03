@@ -1,5 +1,5 @@
 from flask import Flask, request
-from subprocess import call
+import subprocess
 
 app = Flask(__name__)
 
@@ -8,6 +8,7 @@ def main_text():
     with open("/root/input.txt", "w") as text_file:
         text_file.write(request.data)
     process_results = subprocess.Popen("sh /root/work.sh", shell=True, cwd="/opt/tensorflow/models/syntaxnet")
+    process_results.wait()
     final_results = open('/root/output.conll', 'r').read()
     return final_results
 
