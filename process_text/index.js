@@ -8,7 +8,7 @@ var text_conll = fs.readFileSync('text.conll', 'utf8').toString();
 
 
 var clean_text_lines = R.pipe(
-  R.replace(/:\n\n/g, ', '),
+  // R.replace(/:\n\n/g, ', '),
   R.split('\n'),
   R.map(
     R.pipe(
@@ -106,7 +106,7 @@ var report_from_lines_objs = (lines, objs, omissions = []) => {
   // idx shows where they differ.
   // idx text line must be removed, and recuse
   const text = lines[idx][0];
-  const line = lines[idx][1];
+  const line = lines[idx][1] + 1; // Increment by 1, most editors count from 1
   const omissions_new = R.append({
     line,
     text
@@ -152,11 +152,29 @@ processText(text_md, (text, conllu, omissions) => {
   console.log('done');
 });
 
+
+
 // R.map(conll_text_same, R.zip(t,c))
 // t.length
 // c.length
 
-// var [lines_final, objs_final, omissions] = report_from_lines_objs(t, c, []);
+var [lines_final, objs_final, omissions] = report_from_lines_objs(t, c, []);
+
+R.pipe(
+  R.apply(R.zip),
+  // R.nth(500)
+  R.takeLast(1),
+  R.nth(0),
+  R.nth(0),
+  R.nth(0)
+)([lines_final, objs_final]);
+R.pipe(
+  R.apply(R.zip),
+  // R.nth(500)
+  R.takeLast(1),
+  R.nth(0),
+  R.nth(1)
+)([lines_final, objs_final]);
 
 // processText(`
 // “Believe me, my dear Miss Elizabeth, that your modesty, so far from doing you any disservice, rather adds to your other perfections. You would have been less amiable in my eyes had there _not_ been this little unwillingness; but allow me to assure you, that I have your respected mother’s permission for this address. You can hardly doubt the purport of my discourse, however your natural delicacy may lead you to dissemble; my attentions have been too marked to be mistaken. Almost as soon as I entered the house, I singled you out as the companion of my future life. But before I am run away with by my feelings on this subject, perhaps it would be advisable for me to state my reasons for marrying--and, moreover, for coming into Hertfordshire with the design of selecting a wife, as I certainly did.”
