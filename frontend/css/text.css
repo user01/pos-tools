@@ -1,0 +1,17 @@
+div p.line:nth-child(odd) {
+  border-left: 1px solid grey;
+  background: rgba(66, 66, 66, 0.04);
+}
+div p.line:nth-child(even) {
+  border-right: 1px solid grey;
+  background: rgba(66, 66, 66, 0.14);
+}
+
+.line {
+  text-indent: 1em;
+  padding: 0.2em;
+}
+
+.line:hover {
+  background: rgba(66, 66, 66, 0.24) !important;
+}
