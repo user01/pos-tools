@@ -15,3 +15,72 @@ div p.line:nth-child(even) {
 .line:hover {
   background: rgba(66, 66, 66, 0.24) !important;
 }
+
+span.token {
+  pointer-events:none;
+}
+
+/*VERB - verbs (all tenses and modes)*/
+span.type-VERB {
+  background: #a6cee3;
+  background: #33a02c;
+  background: rgba(51, 160, 44, 0.73);
+}
+/*NOUN - nouns (common and proper)*/
+span.type-NOUN {
+  /*background: #e31a1c;*/
+  background: hsla(359, 89%, 63%, 0.82);
+  text-shadow: 0px 0px 1px hsla(359, 72%, 48%, 0.82);
+}
+/*PRON - pronouns */
+span.type-PRON {
+  /*background: #ff7f00;*/
+  background: hsla(359, 76%, 80%, 0.88);
+  text-shadow: 0px 0px 1px hsla(0, 0%, 100%, 0.82);
+}
+/*ADJ - adjectives*/
+span.type-ADJ {
+  background: #1f78b4;
+}
+/*ADV - adverbs*/
+span.type-ADV {
+  /*background: #fb9a99;*/
+  background: #b2df8a;
+}
+/*ADP - adpositions (prepositions and postpositions)*/
+span.type-ADP {
+  background: #ffff33;
+  background: #984ea3;
+  background: rgba(152, 78, 163, 0.39);
+}
+/*CONJ - conjunctions*/
+span.type-CONJ {
+  background: #a65628;
+  background: #fdbf6f;
+}
+/*DET - determiners*/
+span.type-DET {
+  background: #f781bf;
+  background: #ff7f00;
+}
+/*NUM - cardinal numbers*/
+span.type-NUM {
+  background: #999999;
+  background: #cab2d6;
+}
+/*PRT - particles or other function words*/
+span.type-PRT {
+  background: #4daf4a;
+  background: #6a3d9a;
+}
+/*X - other: foreign words, typos, abbreviations*/
+span.type-X {
+  background: #ffff99;
+  background: #377eb8;
+}
+/*. - punctuation*/
+span.type-\. {
+  background: rgba(177, 89, 40, 0.41);
+}
+
+["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"]

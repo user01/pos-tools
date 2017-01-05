@@ -532,10 +532,13 @@ a.topnav  {
 }
 .row-padded {
     padding: 1em;
+    max-height: 60%;
+    overflow-y: scroll;
 }
 .row-base {
     flex:2;
     display: flex;
+    min-height: 30%;
 }
 .col-side {
     flex :0 0 5em;
