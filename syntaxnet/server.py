@@ -9,7 +9,6 @@ def main_text():
     if (request.data is None or len(request.data) < 1):
         print "No payload"
         return "", 400
-    print request.data
     with open("/root/input.txt", "w") as text_file:
         text_file.write(request.data)
     process_results = subprocess.Popen("sh /root/work.sh", shell=True, cwd="/opt/tensorflow/models/syntaxnet")
@@ -24,6 +23,7 @@ def main_text():
     except OSError:
         pass
 
+    print "Completed current process"
     return final_results
 
 @app.errorhandler(404)
