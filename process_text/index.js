@@ -146,7 +146,7 @@ var processText = (text, onComplete, warnOnOmissions = true) => {
 };
 
 var t, c, o;
-processText(text_md.substring(0,5000), (text, conllu, omissions) => {
+processText(text_md, (text, conllu, omissions) => {
   t = text;
   c = conllu;
   o = omissions;
