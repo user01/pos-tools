@@ -1,8 +1,17 @@
 $('#main-text').html(`<h3>Boo!</h3>`);
 
-const wrap_str_html = (str, idx) => `<p class="line" index="${idx}">${str}</p>`;
+const markup_str = (conllu) => {
+  return R.pipe(
+    R.map(arr => `<span class="type-${arr[3]} token">${arr[1]}</span>`),
+    R.join(' ')
+  )(conllu);
+}
+
+const wrap_str_html = (elm, idx) => `<p class="line" index="${idx}">
+    ${markup_str(elm[2])}
+  </p>`;
 const write_data_to_doc = R.pipe(
-  R.addIndex(R.map)((elm, idx) => wrap_str_html(elm[1], idx)),
+  R.addIndex(R.map)((elm, idx) => wrap_str_html(elm, idx)),
   R.join(`\n\n`),
   s => $('#main-text').html(s)
 );
