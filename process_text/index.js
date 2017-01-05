@@ -146,5 +146,15 @@ const processText = (text, onComplete, warnOnOmissions = true) => {
 };
 
 processText(text_md, (text, conllu, omissions) => {
+  const lines_md = R.map(
+    R.pipe(
+      R.nth(0),
+      i => md.renderInline(i)
+    )
+  )(text);
+  const lines_num = R.map(R.nth(1), text);
+  const results = R.transpose([lines_num, lines_md, conllu]);
+
+  fs.writeFileSync("text.json", JSON.stringify(results, null, 2));
   console.log('Complete');
 });
