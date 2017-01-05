@@ -1,13 +1,13 @@
-var md = require('markdown-it')();
-var fs = require('fs');
-var R = require('ramda');
-var request = require('request');
+const md = require('markdown-it')();
+const fs = require('fs');
+const R = require('ramda');
+const request = require('request');
 
-var text_md = fs.readFileSync('text.md', 'utf8').toString();
-var text_conll = fs.readFileSync('text.conll', 'utf8').toString();
+const text_md = fs.readFileSync('text.md', 'utf8').toString();
+const text_conll = fs.readFileSync('text.conll', 'utf8').toString();
 
 
-var clean_text_lines = R.pipe(
+const clean_text_lines = R.pipe(
   R.split('\n'),
   R.map(
     R.pipe(
@@ -31,14 +31,14 @@ var clean_text_lines = R.pipe(
   )
 );
 
-var clean_text_str = R.pipe(
+const clean_text_str = R.pipe(
   clean_text_lines,
   R.map(R.nth(0)),
   R.join('\n\n')
 );
 // fs.writeFileSync("fixed.text.txt", clean_text_str(text_md))
 
-var conllu_entry_to_obj = R.pipe(
+const conllu_entry_to_obj = R.pipe(
   R.split('\n'),
   R.map(
     R.pipe(
@@ -50,7 +50,7 @@ var conllu_entry_to_obj = R.pipe(
   )
 );
 
-var conllu_file_to_objs = R.pipe(
+const conllu_file_to_objs = R.pipe(
   R.split('\n\n'),
   R.filter(
     R.pipe(
@@ -63,13 +63,13 @@ var conllu_file_to_objs = R.pipe(
 );
 
 
-var clean_str_to_chars = R.pipe(
+const clean_str_to_chars = R.pipe(
   R.replace(/[^a-zA-Z]/g, ''),
   R.splitEvery(1),
   R.uniq,
   R.join('')
 );
-var conll_text_same = ([text, conll]) => {
+const conll_text_same = ([text, conll]) => {
   return R.equals(
     R.pipe(
       R.map(R.nth(1)),
@@ -83,7 +83,7 @@ var conll_text_same = ([text, conll]) => {
   );
 };
 
-var report_from_lines_objs = (lines, objs, omissions = []) => {
+const report_from_lines_objs = (lines, objs, omissions = []) => {
   // console.log(lines.length, objs.length, omissions.length);
   if (objs.length > lines.length) {
     console.error('Objects outnumber lines.');
@@ -118,7 +118,7 @@ var report_from_lines_objs = (lines, objs, omissions = []) => {
 
 
 
-var processText = (text, onComplete, warnOnOmissions = true) => {
+const processText = (text, onComplete, warnOnOmissions = true) => {
   request.post({
     url: 'http://localhost:5005/text',
     timeout: 60 * 20 * 1000, // milliseconds of timeout
@@ -145,10 +145,6 @@ var processText = (text, onComplete, warnOnOmissions = true) => {
   });
 };
 
-var t, c, o;
 processText(text_md, (text, conllu, omissions) => {
-  t = text;
-  c = conllu;
-  o = omissions;
-  console.log('done');
+  console.log('Complete');
 });
