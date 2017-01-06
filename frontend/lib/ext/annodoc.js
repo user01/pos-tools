@@ -58,13 +58,13 @@ var Annodoc = (function($, window, undefined) {
         }
 
         // replace any space with ' ' in non-nested curly brackets
-        s = s.replace(/(\{[^\{\}\[\]]*\})/g, 
+        s = s.replace(/(\{[^\{\}\[\]]*\})/g,
                       function(a, b) { return b.replace(/\s+/g, ' '); });
         // replace any space with ' ' in [] up to nesting depth 1
-//        s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g, 
+//        s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g,
 //         		      function(a, b) { return b.replace(/\s+/g, ' '); });
         // actually, up to nesting depth 2
-        s = s.replace(/(\[(?:[^\[\]\{\}]|\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])*\])/g, 
+        s = s.replace(/(\[(?:[^\[\]\{\}]|\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])*\])/g,
                       function(a, b) { return b.replace(/\s+/g, ' '); });
         return s;
     };
@@ -101,7 +101,7 @@ var Annodoc = (function($, window, undefined) {
         // unescape backslash escapes in text and tag
         text = text.replace(/([^\\]*)\\(.)/g, '$1$2');
         POS = POS.replace(/([^\\]*)\\(.)/g, '$1$2');
-        
+
         return [text, POS, features];
     };
 
@@ -190,7 +190,7 @@ var Annodoc = (function($, window, undefined) {
         var id = m[1],
             type = m[2],
             argstr = m[3];
-    
+
         var args = normalizeSpace(argstr).split(' ');
 
         return [id, type].concat(args);
@@ -286,7 +286,7 @@ var Annodoc = (function($, window, undefined) {
         if (log === undefined) {
             log = makeLogger();
         }
-        var lines = ann.split('\n');        
+        var lines = ann.split('\n');
 
         // first line is assumed to be the document text
         var document_text = lines[0];
@@ -310,28 +310,28 @@ var Annodoc = (function($, window, undefined) {
 
             // annotation type determined by first character on line
             switch (line[0]) {
-                case 'T': 
+                case 'T':
                     textbounds.push(parseAnnTextbound(line, log));
                     break;
-                case 'R': 
+                case 'R':
                     relations.push(parseAnnRelation(line, log));
                     break;
-                case 'E': 
+                case 'E':
                     events.push(parseAnnEvent(line, log));
                     break;
-                case 'M': 
+                case 'M':
                     attributes.push(parseAnnModifier(line, log));
                     break;
-                case 'A': 
+                case 'A':
                     attributes.push(parseAnnAttribute(line, log));
                     break;
-                case 'N': 
+                case 'N':
                     normalizations.push(parseAnnNormalization(line, log));
                     break;
-                case '*': 
+                case '*':
                     equivs.push(parseAnnEquiv(line, log));
                     break;
-                case '#': 
+                case '#':
                     comments.push(parseAnnComment(line, log));
                     break;
                 default:
@@ -363,7 +363,7 @@ var Annodoc = (function($, window, undefined) {
         // split textbounds into entities and triggers, where any textbound
         // referenced from an event is a trigger, and everything else is an
         // entity.
-        var entities = [], 
+        var entities = [],
             triggers = [],
             isTrigger = {};
         for (var i=0; i<events.length; i++) {
@@ -418,7 +418,7 @@ var Annodoc = (function($, window, undefined) {
         sentence_text = '';
         for (var i=0; i<tokens.length; i++) {
             var text_POS_features = parseSdToken(tokens[i]);
-            var text = text_POS_features[0], 
+            var text = text_POS_features[0],
                 POS = text_POS_features[1],
                 features = text_POS_features[2];
             //; special case hack for RTL languages, see
@@ -450,7 +450,7 @@ var Annodoc = (function($, window, undefined) {
             // TODO: consider case-insensitive implementation
 
             // indexed match
-            var m = t.match(/^\s*(.*)-(\d+)\s*$/)	      
+            var m = t.match(/^\s*(.*)-(\d+)\s*$/)
             if (m) {
                 var text = m[1], idx = m[2];
                 // confirm match (SD indices are 1-based)
@@ -482,11 +482,11 @@ var Annodoc = (function($, window, undefined) {
         for (var i=1; i<lines.length; i++) {
             var line = lines[i];
             line = normalizeSpace(line);
-            
+
             if (line.match(/^\s*$/)) {
                 continue; // ignore empties
             }
-            
+
             var m = line.match(/^(\S+)\s*\(\s*(\S+?)\s*,\s*(\S+)\s*\)$/);
             if (!m) {
                 log('failed to parse: "'+line+'"');
@@ -494,14 +494,14 @@ var Annodoc = (function($, window, undefined) {
                 continue;
             }
             var type = m[1], from = m[2], to = m[3];
-            
+
             // ignore root dependency (if any) for visualization
             // TODO: consider showing root when defined?
             if (type == 'root' && from.match(/-0$/)) {
                 log('note: skipping "root": "'+line+'"');
                 continue;
             }
-	    
+
             // determine which tokens are referred to
             var fromIdx = tokenIndex(from), toIdx = tokenIndex(to);
             if (fromIdx === null || toIdx === null) {
@@ -509,14 +509,14 @@ var Annodoc = (function($, window, undefined) {
                 error = true;
                 continue;
             }
-	    
-            relations.push([ 'R'+i, type, [ [ 'arg1', 'T'+(fromIdx+1) ], 
+
+            relations.push([ 'R'+i, type, [ [ 'arg1', 'T'+(fromIdx+1) ],
                                             [ 'arg2', 'T'+(toIdx+1)   ] ] ]);
         }
 
         log('SD parse done: '+spans.length+' tokens, '+
             relations.length+' dependencies.');
-          
+
         return {
             'text': sentence_text,
             'entities' : spans,
@@ -549,12 +549,12 @@ var Annodoc = (function($, window, undefined) {
         // 3.  LEMMA: lemma or stem of word form
         // 4.  CPOSTAG: coarse-grained part-of-speech tag
         // 5.  POSTAG: fine-grained part-of-speech tag
-        // 6.  FEATS: set of syntactic and/or morphological features 
+        // 6.  FEATS: set of syntactic and/or morphological features
         // 7.  HEAD: head ID of the current token
         // 8.  DEPREL: dependency relation to the HEAD
         // 9.  PHEAD:	projective head ID of current token
         // 10. PDEPREL:	dependency relation to the PHEAD
-        // 
+        //
         // (here, we will use ID, FORM, CPOSTAG, HEAD and DEPREL)
         // TODO: use also at least PHEAD, PDEPREL
         var ids = [],
@@ -593,11 +593,11 @@ var Annodoc = (function($, window, undefined) {
             if (heads[0] === 0) {
                 continue;
             }
-            relations.push(['R'+ids[i], deprels[i], 
+            relations.push(['R'+ids[i], deprels[i],
                             [ [ 'arg1', 'T'+heads[i] ],
                               [ 'arg2', 'T'+ids[i] ] ] ]);
         }
-        
+
         var text = forms.join(' ');
 
         return {
@@ -610,7 +610,7 @@ var Annodoc = (function($, window, undefined) {
 
     // from http://stackoverflow.com/a/2117523
     var random_guid = function() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, 
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
                                                               function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
@@ -762,23 +762,23 @@ var Annodoc = (function($, window, undefined) {
     // mixing multiple configs in a single page.
     var spanTypes = null;
     var relationTypesHash = null;
-    var typesLoaded = function(_spanTypes, _entityAttributeTypes, 
+    var typesLoaded = function(_spanTypes, _entityAttributeTypes,
                                _eventAttributeTypes, _relationTypesHash) {
         spanTypes = _spanTypes;
         relationTypesHash = _relationTypesHash;
     };
 
-    // invoked by brat dispatcher to display additional information related 
+    // invoked by brat dispatcher to display additional information related
     // to a particular span ("text-bound") annotation.
-    var displaySpanInformation = function(evt, target, spanId, spanType, 
+    var displaySpanInformation = function(evt, target, spanId, spanType,
                                           mods, spanText, commentText) {
 
         // in part following brat/visualizer_ui.js:displaySpanComment()
         var spanLabel = Util.spanDisplayForm(spanTypes, spanType)
         var comment = '';
         comment += '<div>';
-        comment += ('<div class="comment_text">"' + 
-                    Util.escapeHTML(spanText) + 
+        comment += ('<div class="comment_text">"' +
+                    Util.escapeHTML(spanText) +
                     '"</div>');
         comment += ((spanLabel.match(/^\s*$/) ? '' :
                      '<span class="comment_type_id_wrapper">' +
@@ -792,10 +792,27 @@ var Annodoc = (function($, window, undefined) {
         displayComment(evt, target, comment, commentText);
     };
 
-    // invoked by brat dispatcher to display additional information related 
+    var roleToTitle = (role) => {
+      switch (role) {
+        case 'nsubjpass':
+         return 'Passive Nominal Subject';
+        default:
+      }
+      return `Unknown ${role}`;
+    };
+    var roleToDescription = (role) => {
+      switch (role) {
+        case 'nsubjpass':
+         return `A passive nominal subject is a noun phrase which is the syntactic subject of a passive clause.`;
+        default:
+      }
+      return 'Unknown';
+    };
+
+    // invoked by brat dispatcher to display additional information related
     // to a particular arc (relation) annotation.
     var displayArcInformation = function(evt, target, symmetric, arcId,
-                                         originSpanId, originSpanType, role, 
+                                         originSpanId, originSpanType, role,
                                          targetSpanId, targetSpanType,
                                          commentText) {
         var arcRole = target.attr('data-arc-role');
@@ -813,10 +830,13 @@ var Annodoc = (function($, window, undefined) {
 //                    Util.escapeHTML(arcDisplayForm) + ' ' + arrowStr + ' ' +
 //                    Util.escapeHTML(targetType) +
 //                    '</span></span>';
-        comment += '<span class="comment_type_id_wrapper">' +
-                   '<span class="comment_type">' +
-                   Util.escapeHTML(arcDisplayForm) +
-                   '</span></span>';
+// <p class="comment">${Util.escapeHTML(arcDisplayForm)}</p>
+        comment += `<span class="comment_type_id_wrapper">
+                    <span class="comment_type">
+                    <h2 class="comment">${roleToTitle(arcRole)}</h2>
+                    <br />
+                    <p class="comment">${roleToDescription(arcRole)}</p>
+                    </span></span>`;
         displayComment(evt, target, comment, commentText);
     };
 
@@ -839,8 +859,8 @@ var Annodoc = (function($, window, undefined) {
     // END copied from brat visualizer_ui.js
 
     // Return callback triggered on changes to visualization input.
-    var makeInputHandler = function(eId, defaultLabel, parse, 
-                                    dispatcher, visualization, 
+    var makeInputHandler = function(eId, defaultLabel, parse,
+                                    dispatcher, visualization,
                                     inputArea, parsedArea, logArea) {
 
         var inputHandler = function() {
@@ -868,7 +888,7 @@ var Annodoc = (function($, window, undefined) {
                 visualization.addClass('haserror');
                 return;
             }
-    
+
             parsedArea.text(objectToString(parsed));
 
             try {
@@ -882,7 +902,7 @@ var Annodoc = (function($, window, undefined) {
                 visualization.addClass('haserror');
             }
         };
-        
+
         return inputHandler;
     };
 
@@ -1000,7 +1020,7 @@ var Annodoc = (function($, window, undefined) {
             // console.log('embeddingElements: ids not defined');
             return null;
         }
-            
+
         var visualization = $('#'+visId),
             inputArea = $('#'+inputId),
             parsedArea = $('#'+parsedId),
@@ -1020,7 +1040,7 @@ var Annodoc = (function($, window, undefined) {
             'inputArea': inputArea,
             'parsedArea': parsedArea,
             'logArea': logArea,
-        };        
+        };
     };
 
     // Create elements for tab-based embedding interface
@@ -1085,10 +1105,10 @@ var Annodoc = (function($, window, undefined) {
         if (!(options && options.tabs)) {
             showHideButton.hide();
         }
-        
+
         // attach top-level elements
         elem.empty().append(shDiv, tabDiv, visDiv);
-        
+
         return {
             'visualization': visDiv,
             'inputArea': inputArea,
@@ -1173,7 +1193,7 @@ var Annodoc = (function($, window, undefined) {
         };
 
         // initialize brat visualization
-        var visId = visualization.attr('id'); 
+        var visId = visualization.attr('id');
         Util.embed(visId, $.extend({'collection': null}, cdata),
                    $.extend({}, parsed), webFontURLs, dispatcher,
                    visualizerOptions);
@@ -1196,18 +1216,18 @@ var Annodoc = (function($, window, undefined) {
     var resolveEmbeddedReference = function(elem, data) {
         var refId = elem.attr('href'),
 	    refElem = $(refId);
-        
+
         if (refElem === undefined) {
             console.log('Failed to resolve reference to', refId, 'for', elem);
             return;
         }
-        
+
         var refSeq = refElem.attr('data-embednum');
         if (refSeq === undefined) {
             console.log('no data-embednum for', refElem);
             return;
         }
-        
+
         var origText = elem.text();
         var resolvedText = origText.replace(/\#/, refSeq);
         if (origText === resolvedText) {
@@ -1309,7 +1329,7 @@ var Annodoc = (function($, window, undefined) {
         // failed to match anything
         return null;
     };
-    
+
     var createDocumentationLink = function(e, collections) {
         var s, linkedByText;
 
@@ -1349,7 +1369,7 @@ var Annodoc = (function($, window, undefined) {
             // if the link was set by the element text content, mark
             // with additional class and turn e.g. "entity/person"
             // into "person" in link text
-            if (linkedByText) {                
+            if (linkedByText) {
                 e.addClass('doclabel');
                 if ((m = e.text().match(/^.+\/(.+)$/)) !== null) {
                     e.text(m[1]);
@@ -1440,7 +1460,7 @@ var Annodoc = (function($, window, undefined) {
     var parseFunctionMap = {
         // Stanford dependencies
         '.sdparse' : parseSd,
-        '.language-sdparse' : parseSd, 
+        '.language-sdparse' : parseSd,
         '.sd-parse' : parseSd, // deprecated, avoid using
 
         // CoNLL-X
@@ -1470,7 +1490,7 @@ var Annodoc = (function($, window, undefined) {
         }
         if (parseFunction === undefined) {
             console.log('internal error: missing parse function');
-        }        
+        }
         return parseFunction;
     };
 
@@ -1490,7 +1510,7 @@ var Annodoc = (function($, window, undefined) {
             parseFunction = pending[1],
             collectionData = pending[2];
         embedAnnotation(element, parseFunction, collectionData);
-        
+
         return true;
     };
 
@@ -1563,7 +1583,7 @@ var Annodoc = (function($, window, undefined) {
         // trigger embedding for the next and recurse.
         embedAndWaypointPending();
     };
-    
+
     // top-level function to call to embed visualizations,
     // create documentation links, etc.
     var activate = function(collectionData, documentCollections) {
