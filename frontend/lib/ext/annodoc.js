@@ -796,6 +796,20 @@ var Annodoc = (function($, window, undefined) {
       switch (role) {
         case 'nsubjpass':
          return 'Passive Nominal Subject';
+        case 'nsubj':
+         return 'Nominal Subject';
+        case 'ccomp':
+         return 'Clausal Complement';
+        case 'auxpass':
+         return 'Passive Auxiliary';
+        case 'punct':
+         return 'Punctuation';
+        case 'det':
+         return 'Determiner';
+        case 'amod':
+         return 'Adjectival Modifier';
+        case 'mark':
+         return 'Marker';
         default:
       }
       return `Unknown ${role}`;
@@ -803,7 +817,39 @@ var Annodoc = (function($, window, undefined) {
     var roleToDescription = (role) => {
       switch (role) {
         case 'nsubjpass':
-         return `A passive nominal subject is a noun phrase which is the syntactic subject of a passive clause.`;
+          return `A passive nominal subject is a noun phrase which is the syntactic subject of a passive clause.`;
+        case 'punct':
+          return `This is used for any piece of punctuation in a clause.`;
+        case 'mark':
+          return `A marker is the subordinating conjunction introducing a finite clause subordinate to another clause. The mark is a dependent of the subordinate clause head.`;
+        case 'ccomp':
+         return `
+         A clausal complement of a verb or adjective is a dependent clause which is a core argument. That is, it functions like an object of the verb, or adjective.
+         <br />
+         Such clausal complements may be finite or nonfinite. However, if the subject of the clausal complement is controlled (that is, must be the same as the higher subject or object, with no other possible interpretation) the appropriate relation is xcomp.
+         <br />
+         The key difference here is that, while it is possible to interpret the first sentence to mean that the boss will not be doing any digging, in the second sentence it is clear that the subject of digging can only be we. This is what distinguishes ccomp and xcomp.`;
+        case 'nsubj':
+         return `
+         A nominal subject is a nominal phrase which is the syntactic subject of a clause.
+         `;
+       case 'auxpass':
+         return `
+         A passive auxiliary of a clause is a form of the auxiliary verb být “to be” used to construct the periphrastic passive voice (in any tense or in the infinitive).
+         <br />
+         Note that the passive participle may be also used as nominal predicate with copula. Hence it may be difficult to distinguish a passive construction from a copula construction. The former focuses on the process while the latter emphasizes the result.`;
+       case 'det':
+         return `
+         The relation determiner (det) holds between a nominal head and its determiner. This relation is used for pronominal adjectival modifiers of noun phrases; the det modifier has the POS tag DET and vice versa. Non-pronominal adjectives are tagged ADJ and the relation is labeled amod.
+         <br />
+         Pronominal quantifiers are tagged DET but their relation to their head is a subtype of the det relation: either det:numgov or det:nummod.
+         `;
+       case 'amod':
+         return `
+         An adjectival modifier of a noun is any adjectival phrase that serves to modify the meaning of the noun.
+         <br />
+         Exception: if the modifying adjectival word is pronominal (i.e. tagged DET), the relation is det instead of amod.
+         `;
         default:
       }
       return 'Unknown';
