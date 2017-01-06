@@ -808,8 +808,23 @@ var Annodoc = (function($, window, undefined) {
          return 'Determiner';
         case 'amod':
          return 'Adjectival Modifier';
+        case 'advmod':
+         return 'Adverbial Modifier';
         case 'mark':
          return 'Marker';
+        case 'aux':
+         return 'Auxiliary';
+        case 'case':
+         return 'Case Relation';
+        case 'prep':
+         return 'Prepositional Phrase (Case or Mark)';
+        case 'obj':
+         return 'Object';
+        case 'iobj':
+         return 'Indirect Object';
+        case 'pobj':
+        case 'nmod':
+         return 'Nominal Modifier (Object of a Preposition)';
         default:
       }
       return `Unknown ${role}`;
@@ -820,6 +835,21 @@ var Annodoc = (function($, window, undefined) {
           return `A passive nominal subject is a noun phrase which is the syntactic subject of a passive clause.`;
         case 'punct':
           return `This is used for any piece of punctuation in a clause.`;
+        case 'advmod':
+          return `An adverbial modifier of a word is a (non-clausal) adverb or adverbial phrase that serves to modify the meaning of the word.`;
+        case 'nmod':
+        case 'pobj':
+          return `The nmod relation is used for nominal dependents of another noun or noun phrase and functionally corresponds to an attribute, or genitive complement.`;
+        case 'obj':
+          return `The object of a verb is the second most core argument of a verb after the subject.
+          <br />
+          Typically, it is the noun phrase that denotes the entity acted upon or which undergoes a change of state or motion (the proto-patient).`;
+        case 'case':
+          return `The case relation is used for any case-marking element which is treated as a separate syntactic word (including prepositions, postpositions, and clitic case markers).
+          <br />
+          Case-marking elements are treated as dependents of the noun or clause they attach to or introduce. (Thus, contrary to SD, UD abandons treating a preposition as a mediator between a modified word and its object.) The case relation aims at providing a more uniform analysis of nominal elements, prepositions and case in morphologically rich languages: a nominal in an oblique case will receive the same dependency structure as a nominal introduced by an adposition.`;
+        case 'iobj':
+          return `The indirect object of a verb is any nominal phrase that is a core argument of the verb but is not its subject or (direct) object.`;
         case 'mark':
           return `A marker is the subordinating conjunction introducing a finite clause subordinate to another clause. The mark is a dependent of the subordinate clause head.`;
         case 'ccomp':
@@ -833,6 +863,13 @@ var Annodoc = (function($, window, undefined) {
          return `
          A nominal subject is a nominal phrase which is the syntactic subject of a clause.
          `;
+       case 'aux':
+         return `
+           An auxiliary of a clause is a form of the auxiliary verb být “to be” used to construct the periphrastic future tense, past tense or conditional.
+           <br />
+          Exception: Auxiliary verb used to construct the passive voice is not labeled aux but auxpass.
+          <br />
+          Note that besides aux and auxpass, the verb být may also act as a copula and as the main verb.`;
        case 'auxpass':
          return `
          A passive auxiliary of a clause is a form of the auxiliary verb být “to be” used to construct the periphrastic passive voice (in any tense or in the infinitive).
